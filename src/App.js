@@ -3,13 +3,20 @@ import './App.css';
 import React from 'react';
 
 function App() {
+  const dateBuilder = (d) => {
+    let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    let day = days[d.getDay()];
+
+    return `${day}`
+  }
+  
   return (
     <div className="App">
       <main>
         <div className='location-box'>
           <div className='location'></div>
-          <div className='date'></div>
-          
+          <div className='date'>{dateBuilder(new Date())}</div>
+
         </div>
       </main>
       {/* <header className="App-header">
