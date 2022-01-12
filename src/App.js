@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import './App.css';
-import React, { useState, useEffect} from 'react';
+import React, { useState} from 'react';
 
 const api = {
   key: "ab79ead9053f46be5efaf3bb2f65e3ae",
@@ -10,7 +10,26 @@ const api = {
 
 function App() {
   
-  const [weather, setWeather] = useState('');
+  // useEffect(() => { 
+  //   fetch(`${api.base}weather?q=London,uk&units=metric&APPID=${api.key}`)
+  //   .then(res => res.json())
+  //   .then(result => setWeather(result));
+  // })
+  
+  const [query, setQuery] = useState('');
+  const [weather, setWeather] = useState({});
+
+  const search = evt => {
+    if (evt.key === "Enter") {
+      fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
+        .then(res => res.json())
+        .then(result => {
+          setWeather(result);
+          setQuery('');
+          console.log(result);
+        });
+    }
+  }
 
   const dateBuilder = (d) => {
     let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -18,41 +37,36 @@ function App() {
 
     return `${day}`
   }
-  useEffect(() => { 
-    fetch(`${api.base}weather?q=london&units=metric&APPID=${api.key}`)
-    .then(res => res.json())
-    .then(result => setWeather(result));
-    
-  })
+
   
 
   
   return (
     <div className="App">
       <main>
+      <div className="search-box">
+          <input 
+            type="text"
+            className="search-bar"
+            placeholder="Search..."
+            onChange={e => setQuery(e.target.value)}
+            value={query}
+            onKeyPress={search}
+          />
+        </div>
+        {(typeof weather.main != "undefined") ? (
+          <div>
         <div className='location-box'>  
           <div className='date'>{dateBuilder(new Date())}</div>
         </div>  
         <div className='weather-box'>
-          <div className='temp'>{Math.round(weather.main.temp)}</div>
-        </div>  
+          <div className='temp'>{weather.main.temp}</div> 
+         </div>
+         </div>
+         ) : ('')}
 
         
       </main>
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
     </div>
   );
 }
