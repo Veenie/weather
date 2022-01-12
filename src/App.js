@@ -60,7 +60,8 @@ function App() {
           <div className='date'>{dateBuilder(new Date())}</div>
         </div>  
         <div className='weather-box'>
-          <div className='temp'>{weather.main.temp}</div> 
+          <div className='tempmax'>{Math.round(weather.main.temp_max)}</div>
+          <div className='tempmin'>{Math.round(weather.main.temp_min)}</div>
          </div>
          </div>
          ) : ('')}
